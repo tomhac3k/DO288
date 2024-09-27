@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Ensure that any error causes the build to fail
+set -e
+
+echo "Running assemble script..."
+
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Any additional build steps can go here
+echo "Source-to-Image build is complete."
+

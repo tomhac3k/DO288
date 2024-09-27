@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "Starting the Python web application..."
+
+# Run the Flask app
+python app.py
+
