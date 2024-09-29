@@ -1,0 +1,60 @@
+---
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: myhttpdtemplate
+  annotations:
+    description: Creating my first custom template from scratch with nginx image
+objects:
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      labels:
+        app: ${NAME}
+      name: ${NAME}
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: ${NAME}
+      template:
+        metadata:
+          labels:
+            app: ${NAME}
+        spec:
+          containers:
+          - image: quay.io/tomhac3k/httpd:DO180
+            imagePullPolicy: IfNotPresent
+            name: ${NAME}
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      labels:
+        app: ${NAME}
+      name: ${NAME}
+    spec:
+      ports:
+      - port: 8080
+        protocol: TCP
+        targetPort: 8080
+      selector:
+        app: ${NAME}
+        
+  - apiVersion: route.openshift.io/v1
+    kind: Route
+    metadata:
+      labels:
+        app: ${NAME}
+      name: ${NAME}
+    spec:
+      host: ${NAME}-template-test.apps-crc.testing
+      port:
+        targetPort: 8080
+      to:
+        kind: Service
+        name: ${NAME}
+parameters:
+  - name: NAME
+    description: Mention app name
+    required: true
+    default: "httpdx"
