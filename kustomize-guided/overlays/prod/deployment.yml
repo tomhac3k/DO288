@@ -1,7 +1,7 @@
 apiVersion: v1
 data:
   index.html: |
-    Custom index file for Kustomize
+    Custom index file for Kustomize PROD environment
 kind: ConfigMap
 metadata:
   creationTimestamp: null

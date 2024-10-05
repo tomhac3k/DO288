@@ -1,2 +1,5 @@
 resources:
-- deployment.yml
+- ../../base
+
+patches:
+- path: replica_limits.yml
