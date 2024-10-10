@@ -1,0 +1,26 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    app: do288
+    app.kubernetes.io/component: do288
+    app.kubernetes.io/instance: do288
+  name: custom-php-bc
+  namespace: deploymentconfig-test
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: do288:latest
+  source:
+    contextDir: /php
+    git:
+      uri: https://github.com/tomhac3k/DO288
+    type: Git
+  strategy:
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: php:8.0-ubi8
+        namespace: openshift
+    type: Source

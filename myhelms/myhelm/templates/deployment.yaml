@@ -1,0 +1,17 @@
+{{ with .Values.myhelm }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "myhelm.fullname" . }}
+  labels:
+    {{- include "myhelm.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "myhelm.selectorLabels" . | nindent 6 }}
+  template:
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ .image }}
