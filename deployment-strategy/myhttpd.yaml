@@ -32,10 +32,10 @@ items:
       type: Docker
     triggers:
     - github:
-        secret: 2xmWfdu6vibOBx3zYdzZ
+        secret: rwJiDVOBD8hnwtuZ0Ixa
       type: GitHub
     - generic:
-        secret: Z6fueksj1fR1M8rbGMA0
+        secret: 1eh6voC9ycA58sIsClzu
       type: Generic
     - type: ConfigChange
     - imageChange: {}
@@ -58,13 +58,6 @@ items:
     selector:
       deploymentconfig: my-httpd
     strategy:
-      type: Recreate
-      recreateParams:
-        post:
-          failurePolicy: Abort
-          execNewPod:
-            ContainerName: my-httpd
-            command: ["./test-script/curl.sh"]
       resources: {}
     template:
       metadata:
