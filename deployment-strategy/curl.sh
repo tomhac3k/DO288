@@ -1,5 +1,6 @@
 #!/bin/bash
 
+cp index.html /var/www/html/
 
 if curl http://localhost:8080 &>/dev/null
 then
@@ -17,4 +18,5 @@ then
 	echo "Webserver is active"
 else
 	echo "Webserver is not comming up"
+	echo "Giving up"
 fi

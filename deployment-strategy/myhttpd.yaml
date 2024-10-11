@@ -32,10 +32,10 @@ items:
       type: Docker
     triggers:
     - github:
-        secret: t2DQtuwYSWtaWEazTjkj
+        secret: 2xmWfdu6vibOBx3zYdzZ
       type: GitHub
     - generic:
-        secret: YRh9n-0i4_ivTvifQkiL
+        secret: Z6fueksj1fR1M8rbGMA0
       type: Generic
     - type: ConfigChange
     - imageChange: {}
@@ -63,8 +63,8 @@ items:
         post:
           failurePolicy: Abort
           execNewPod:
-            containerName: my-httpd
-            command: ["/test-script/curl.sh"]
+            ContainerName: my-httpd
+            command: ["./test-script/curl.sh"]
       resources: {}
     template:
       metadata:
