@@ -7,4 +7,4 @@ then
 else
 	echo "Web server not found"
 
-if
+fi

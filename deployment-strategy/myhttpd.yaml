@@ -7,9 +7,9 @@ items:
       openshift.io/generated-by: OpenShiftNewApp
     creationTimestamp: null
     labels:
-      app: my-php
-      app.kubernetes.io/component: my-php
-      app.kubernetes.io/instance: my-php
+      app: my-httpd
+      app.kubernetes.io/component: my-httpd
+      app.kubernetes.io/instance: my-httpd
     name: httpd
   spec:
     lookupPolicy:
@@ -35,10 +35,10 @@ items:
       openshift.io/generated-by: OpenShiftNewApp
     creationTimestamp: null
     labels:
-      app: my-php
-      app.kubernetes.io/component: my-php
-      app.kubernetes.io/instance: my-php
-    name: my-php
+      app: my-httpd
+      app.kubernetes.io/component: my-httpd
+      app.kubernetes.io/instance: my-httpd
+    name: my-httpd
   spec:
     lookupPolicy:
       local: false
@@ -51,16 +51,16 @@ items:
       openshift.io/generated-by: OpenShiftNewApp
     creationTimestamp: null
     labels:
-      app: my-php
-      app.kubernetes.io/component: my-php
-      app.kubernetes.io/instance: my-php
-    name: my-php
+      app: my-httpd
+      app.kubernetes.io/component: my-httpd
+      app.kubernetes.io/instance: my-httpd
+    name: my-httpd
   spec:
     nodeSelector: null
     output:
       to:
         kind: ImageStreamTag
-        name: my-php:latest
+        name: my-httpd:latest
     postCommit: {}
     resources: {}
     source:
@@ -76,10 +76,10 @@ items:
       type: Docker
     triggers:
     - github:
-        secret: TIDdWLcV-V5X-9NabILS
+        secret: gLf5usOzCA0guaWja5ea
       type: GitHub
     - generic:
-        secret: IWlgORwGCUT-RRP6uI0a
+        secret: WqiVM5j6GQXN2Gih_0Fq
       type: Generic
     - type: ConfigChange
     - imageChange: {}
@@ -93,15 +93,22 @@ items:
       openshift.io/generated-by: OpenShiftNewApp
     creationTimestamp: null
     labels:
-      app: my-php
-      app.kubernetes.io/component: my-php
-      app.kubernetes.io/instance: my-php
-    name: my-php
+      app: my-httpd
+      app.kubernetes.io/component: my-httpd
+      app.kubernetes.io/instance: my-httpd
+    name: my-httpd
   spec:
     replicas: 1
     selector:
-      deploymentconfig: my-php
-    strategy:
+      deploymentconfig: my-httpd
+    straitegy:
+      type: Recreate
+      recreateParams:
+        post:
+          failurePolicy: Abort
+          execNewPod:
+            containerName: my-httpd
+            command: ["./test-script.sh"]
       resources: {}
     template:
       metadata:
@@ -109,11 +116,11 @@ items:
           openshift.io/generated-by: OpenShiftNewApp
         creationTimestamp: null
         labels:
-          deploymentconfig: my-php
+          deploymentconfig: my-httpd
       spec:
         containers:
-        - image: my-php:latest
-          name: my-php
+        - image: my-httpd:latest
+          name: my-httpd
           ports:
           - containerPort: 8080
             protocol: TCP
@@ -126,10 +133,10 @@ items:
     - imageChangeParams:
         automatic: true
         containerNames:
-        - my-php
+        - my-httpd
         from:
           kind: ImageStreamTag
-          name: my-php:latest
+          name: my-httpd:latest
       type: ImageChange
   status:
     availableReplicas: 0
@@ -145,10 +152,10 @@ items:
       openshift.io/generated-by: OpenShiftNewApp
     creationTimestamp: null
     labels:
-      app: my-php
-      app.kubernetes.io/component: my-php
-      app.kubernetes.io/instance: my-php
-    name: my-php
+      app: my-httpd
+      app.kubernetes.io/component: my-httpd
+      app.kubernetes.io/instance: my-httpd
+    name: my-httpd
   spec:
     ports:
     - name: 8080-tcp
@@ -160,7 +167,7 @@ items:
       protocol: TCP
       targetPort: 8443
     selector:
-      deploymentconfig: my-php
+      deploymentconfig: my-httpd
   status:
     loadBalancer: {}
 kind: List
