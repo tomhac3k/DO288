@@ -1,0 +1,167 @@
+apiVersion: v1
+items:
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: my-php
+      app.kubernetes.io/component: my-php
+      app.kubernetes.io/instance: my-php
+    name: httpd
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - annotations:
+        openshift.io/imported-from: quay.io/tomhac3k/httpd:DO180
+      from:
+        kind: DockerImage
+        name: quay.io/tomhac3k/httpd:DO180
+      generation: null
+      importPolicy:
+        importMode: Legacy
+      name: DO180
+      referencePolicy:
+        type: ""
+  status:
+    dockerImageRepository: ""
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: my-php
+      app.kubernetes.io/component: my-php
+      app.kubernetes.io/instance: my-php
+    name: my-php
+  spec:
+    lookupPolicy:
+      local: false
+  status:
+    dockerImageRepository: ""
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: my-php
+      app.kubernetes.io/component: my-php
+      app.kubernetes.io/instance: my-php
+    name: my-php
+  spec:
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: my-php:latest
+    postCommit: {}
+    resources: {}
+    source:
+      contextDir: /deployment-strategy/
+      git:
+        uri: https://github.com/tomhac3k/DO288
+      type: Git
+    strategy:
+      dockerStrategy:
+        from:
+          kind: ImageStreamTag
+          name: httpd:DO180
+      type: Docker
+    triggers:
+    - github:
+        secret: TIDdWLcV-V5X-9NabILS
+      type: GitHub
+    - generic:
+        secret: IWlgORwGCUT-RRP6uI0a
+      type: Generic
+    - type: ConfigChange
+    - imageChange: {}
+      type: ImageChange
+  status:
+    lastVersion: 0
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: my-php
+      app.kubernetes.io/component: my-php
+      app.kubernetes.io/instance: my-php
+    name: my-php
+  spec:
+    replicas: 1
+    selector:
+      deploymentconfig: my-php
+    strategy:
+      resources: {}
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          deploymentconfig: my-php
+      spec:
+        containers:
+        - image: my-php:latest
+          name: my-php
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          - containerPort: 8443
+            protocol: TCP
+          resources: {}
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - my-php
+        from:
+          kind: ImageStreamTag
+          name: my-php:latest
+      type: ImageChange
+  status:
+    availableReplicas: 0
+    latestVersion: 0
+    observedGeneration: 0
+    replicas: 0
+    unavailableReplicas: 0
+    updatedReplicas: 0
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: my-php
+      app.kubernetes.io/component: my-php
+      app.kubernetes.io/instance: my-php
+    name: my-php
+  spec:
+    ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    - name: 8443-tcp
+      port: 8443
+      protocol: TCP
+      targetPort: 8443
+    selector:
+      deploymentconfig: my-php
+  status:
+    loadBalancer: {}
+kind: List
+metadata: {}
