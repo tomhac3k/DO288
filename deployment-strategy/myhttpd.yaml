@@ -1,49 +1,5 @@
 apiVersion: v1
 items:
-- apiVersion: image.openshift.io/v1
-  kind: ImageStream
-  metadata:
-    annotations:
-      openshift.io/generated-by: OpenShiftNewApp
-    creationTimestamp: null
-    labels:
-      app: my-httpd
-      app.kubernetes.io/component: my-httpd
-      app.kubernetes.io/instance: my-httpd
-    name: httpd
-  spec:
-    lookupPolicy:
-      local: false
-    tags:
-    - annotations:
-        openshift.io/imported-from: quay.io/tomhac3k/httpd:DO180
-      from:
-        kind: DockerImage
-        name: quay.io/tomhac3k/httpd:DO180
-      generation: null
-      importPolicy:
-        importMode: Legacy
-      name: DO180
-      referencePolicy:
-        type: ""
-  status:
-    dockerImageRepository: ""
-- apiVersion: image.openshift.io/v1
-  kind: ImageStream
-  metadata:
-    annotations:
-      openshift.io/generated-by: OpenShiftNewApp
-    creationTimestamp: null
-    labels:
-      app: my-httpd
-      app.kubernetes.io/component: my-httpd
-      app.kubernetes.io/instance: my-httpd
-    name: my-httpd
-  spec:
-    lookupPolicy:
-      local: false
-  status:
-    dockerImageRepository: ""
 - apiVersion: build.openshift.io/v1
   kind: BuildConfig
   metadata:
@@ -76,10 +32,10 @@ items:
       type: Docker
     triggers:
     - github:
-        secret: gLf5usOzCA0guaWja5ea
+        secret: t2DQtuwYSWtaWEazTjkj
       type: GitHub
     - generic:
-        secret: WqiVM5j6GQXN2Gih_0Fq
+        secret: YRh9n-0i4_ivTvifQkiL
       type: Generic
     - type: ConfigChange
     - imageChange: {}
@@ -101,14 +57,14 @@ items:
     replicas: 1
     selector:
       deploymentconfig: my-httpd
-    straitegy:
+    strategy:
       type: Recreate
       recreateParams:
         post:
           failurePolicy: Abort
           execNewPod:
             containerName: my-httpd
-            command: ["./test-script.sh"]
+            command: ["/test-script/curl.sh"]
       resources: {}
     template:
       metadata:
